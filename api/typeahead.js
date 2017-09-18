@@ -1,7 +1,7 @@
 var key = require('../utils/key');
 var request = require('request');
 var _ = require('underscore');
-
+var createTemplate = require('../utils/template.js').typeahead;
 
 // The Type Ahead API.
 module.exports = function(req, res) {
@@ -15,29 +15,25 @@ module.exports = function(req, res) {
   }
 
   request({
-    url: 'http://api.giphy.com/v1/gifs/search',
+    url: 'http://www.omdbapi.com/',
     qs: {
-      q: term,
-      limit: 15,
-      api_key: key
+      s: term,
+      page: 1,
+      apikey: 'b00dc83c'
     },
     gzip: true,
     json: true,
     timeout: 10 * 1000
   }, function(err, response) {
-    if (err || response.statusCode !== 200 || !response.body || !response.body.data) {
+    if (err || response.statusCode !== 200) {
       res.status(500).send('Error');
       return;
     }
-
-    var results = _.chain(response.body.data)
-      .reject(function(image) {
-        return !image || !image.images || !image.images.fixed_height_small;
-      })
-      .map(function(image) {
+    var results = _.chain(response.body["Search"])
+      .map(function(data) {
         return {
-          title: '<img style="height:75px" src="' + image.images.fixed_height_small.url + '">',
-          text: 'http://giphy.com/' + image.id
+          title: createTemplate(data),
+          text: data['Title']
         };
       })
       .value();
