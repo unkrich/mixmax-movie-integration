@@ -14,7 +14,6 @@ This is an open source Mixmax Slash Command that I built for searching for movie
 
 1. Install using `npm install`
 2. Run using `npm start`
-<<<<<<< HEAD
 3. Add a Mixmax Slash Command in your Mixmax dashboard. (Call it movies) Using:
 	Typeahead API URL: http://localhost:9145/typeahead
 	Resolver API URL: http://localhost:9145/resolver
